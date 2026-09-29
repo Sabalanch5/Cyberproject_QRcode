@@ -1,0 +1,265 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>Gotcha! Think Before You Scan</title>
+<meta name="description" content="You just scanned an unknown QR code. Learn how to spot QR code phishing (quishing) and protect yourself.">
+<meta name="theme-color" content="#0B1220">
+<meta property="og:title" content="Gotcha! Think Before You Scan">
+<meta property="og:description" content="A Cyber Resilience awareness page: how to defend yourself from malicious QR codes.">
+<link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><rect width='100' height='100' rx='20' fill='%230B1220'/><text x='50' y='72' font-size='64' text-anchor='middle' fill='%2300E5A0' font-family='sans-serif' font-weight='bold'>!</text></svg>">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Anton&family=Roboto+Mono:wght@400;700&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --bg: #0B1220;
+    --card: #121C30;
+    --line: #1F2E4A;
+    --green: #00E5A0;
+    --yellow: #FFD24A;
+    --red: #FF5C6C;
+    --text: #E6EDF7;
+    --muted: #9FB0C8;
+  }
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+  html { -webkit-text-size-adjust: 100%; }
+  body {
+    background: var(--bg);
+    background-image:
+      linear-gradient(rgba(0,229,160,0.05) 1px, transparent 1px),
+      linear-gradient(90deg, rgba(0,229,160,0.05) 1px, transparent 1px);
+    background-size: 32px 32px;
+    color: var(--text);
+    font-family: "Roboto Mono", ui-monospace, monospace;
+    font-size: 16px;
+    line-height: 1.55;
+    min-height: 100vh;
+  }
+  .wrap { max-width: 560px; margin: 0 auto; padding: 0 20px 48px; }
+  .topbar { height: 6px; background: var(--green); }
+  h1, h2, .display { font-family: "Anton", Impact, sans-serif; font-weight: 400; text-transform: uppercase; line-height: 1.02; letter-spacing: 0.5px; }
+  .kicker { font-weight: 700; font-size: 12px; letter-spacing: 3px; text-transform: uppercase; color: var(--green); }
+
+  /* Hero */
+  .hero { padding: 36px 0 28px; text-align: center; }
+  .alert-icon { width: 132px; height: 132px; margin: 0 auto 22px; position: relative; }
+  .alert-icon svg { width: 100%; height: 100%; }
+  .scanline { animation: scan 2.2s ease-in-out infinite; }
+  @keyframes scan { 0%,100% { transform: translateY(0); } 50% { transform: translateY(76px); } }
+  .pulse { animation: pulse 1.6s ease-in-out infinite; transform-origin: 104px 28px; }
+  @keyframes pulse { 0%,100% { transform: scale(1); } 50% { transform: scale(1.15); } }
+  .hero h1 { font-size: clamp(56px, 18vw, 92px); color: #fff; margin: 8px 0 6px; }
+  .hero h1 span { color: var(--red); }
+  .hero .sub { font-family: "Anton", sans-serif; text-transform: uppercase; font-size: clamp(22px, 6.4vw, 30px); color: var(--green); line-height: 1.1; }
+  .hero p.lead { margin-top: 16px; color: var(--text); font-size: 16px; }
+  .safe-badge {
+    display: inline-flex; align-items: center; gap: 8px; margin-top: 18px;
+    padding: 8px 14px; border: 1.5px solid var(--green); border-radius: 999px;
+    font-size: 13px; font-weight: 700; color: var(--green);
+  }
+
+  /* Cards */
+  section { margin-top: 28px; }
+  .card { background: var(--card); border: 1.5px solid var(--line); border-radius: 18px; padding: 22px 20px; }
+  .card h2 { font-size: 30px; color: #fff; margin: 6px 0 10px; }
+  .warn { background: var(--yellow); color: var(--bg); border: none; }
+  .warn .kicker { color: var(--bg); }
+  .warn h2 { color: var(--bg); }
+
+  .could-list { list-style: none; margin-top: 12px; display: grid; gap: 10px; }
+  .could-list li { display: flex; gap: 12px; align-items: flex-start; font-weight: 700; }
+  .could-list .ico { flex: 0 0 34px; height: 34px; border-radius: 10px; background: var(--bg); color: var(--yellow); display: grid; place-items: center; font-size: 18px; }
+
+  .where { display: flex; flex-wrap: wrap; gap: 8px; margin-top: 12px; }
+  .chip { padding: 7px 12px; border-radius: 999px; background: var(--bg); border: 1px solid var(--line); font-size: 13px; color: var(--muted); }
+
+  /* Steps */
+  .steps { list-style: none; display: grid; gap: 12px; margin-top: 14px; counter-reset: s; }
+  .steps li { display: grid; grid-template-columns: 44px 1fr; gap: 14px; align-items: start; background: var(--bg); border: 1px solid var(--line); border-radius: 14px; padding: 14px; }
+  .steps .num { font-family: "Anton", sans-serif; font-size: 28px; color: var(--green); line-height: 1; text-align: center; padding-top: 2px; }
+  .steps b { display: block; color: #fff; font-size: 15px; margin-bottom: 2px; }
+  .steps span { color: var(--muted); font-size: 14px; }
+
+  /* Quiz */
+  .quiz-q { margin-top: 10px; color: var(--muted); font-size: 14px; }
+  .options { display: grid; gap: 10px; margin-top: 14px; }
+  .opt {
+    width: 100%; text-align: left; font: inherit; font-size: 14px; color: var(--text);
+    background: var(--bg); border: 1.5px solid var(--line); border-radius: 12px;
+    padding: 14px; cursor: pointer; min-height: 48px; word-break: break-all;
+    transition: border-color .15s, background .15s;
+  }
+  .opt:active { transform: scale(0.99); }
+  .opt.right { border-color: var(--green); background: rgba(0,229,160,0.12); }
+  .opt.wrong { border-color: var(--red); background: rgba(255,92,108,0.12); }
+  .feedback { margin-top: 12px; font-size: 14px; min-height: 22px; }
+  .feedback.ok { color: var(--green); }
+  .feedback.no { color: var(--red); }
+
+  /* Oops */
+  .oops li { margin-left: 18px; margin-top: 6px; color: var(--text); font-size: 14px; }
+  .oops a { color: var(--green); }
+
+  /* CTA */
+  .cta { background: var(--green); color: var(--bg); border-radius: 18px; padding: 26px 20px; text-align: center; }
+  .cta .kicker { color: var(--bg); }
+  .cta h2 { font-size: clamp(34px, 10vw, 46px); margin: 8px 0 6px; color: var(--bg); }
+  .cta .tri { font-family: "Anton", sans-serif; font-size: 20px; letter-spacing: 1px; }
+  .btn {
+    display: block; margin-top: 12px; padding: 15px 18px; border-radius: 12px;
+    background: var(--bg); color: var(--green); font-weight: 700; text-decoration: none; font-size: 15px;
+  }
+  .btn.ghost { background: transparent; color: var(--bg); border: 2px solid var(--bg); }
+
+  footer { margin-top: 28px; text-align: center; color: var(--muted); font-size: 12px; }
+  footer a { color: var(--muted); }
+
+  @media (prefers-reduced-motion: reduce) { .scanline, .pulse { animation: none; } }
+</style>
+</head>
+<body>
+<div class="topbar"></div>
+<main class="wrap">
+
+  <!-- HERO -->
+  <header class="hero">
+    <div class="alert-icon" aria-hidden="true">
+      <svg viewBox="0 0 132 132">
+        <rect x="6" y="14" width="104" height="104" rx="14" fill="#121C30" stroke="#1F2E4A" stroke-width="3"/>
+        <!-- finder squares -->
+        <rect x="20" y="28" width="26" height="26" rx="4" fill="none" stroke="#E6EDF7" stroke-width="5"/>
+        <rect x="28" y="36" width="10" height="10" fill="#E6EDF7"/>
+        <rect x="70" y="28" width="26" height="26" rx="4" fill="none" stroke="#E6EDF7" stroke-width="5"/>
+        <rect x="78" y="36" width="10" height="10" fill="#E6EDF7"/>
+        <rect x="20" y="78" width="26" height="26" rx="4" fill="none" stroke="#E6EDF7" stroke-width="5"/>
+        <rect x="28" y="86" width="10" height="10" fill="#E6EDF7"/>
+        <!-- data dots -->
+        <g fill="#9FB0C8">
+          <rect x="56" y="62" width="8" height="8"/><rect x="70" y="70" width="8" height="8"/>
+          <rect x="84" y="62" width="8" height="8"/><rect x="56" y="86" width="8" height="8"/>
+          <rect x="78" y="86" width="8" height="8"/><rect x="92" y="96" width="8" height="8"/>
+          <rect x="64" y="100" width="8" height="8"/>
+        </g>
+        <!-- scan line -->
+        <rect class="scanline" x="12" y="24" width="92" height="4" rx="2" fill="#00E5A0" opacity="0.9"/>
+        <!-- warning badge -->
+        <g class="pulse">
+          <circle cx="104" cy="28" r="22" fill="#FF5C6C"/>
+          <rect x="101" y="15" width="6" height="16" rx="3" fill="#0B1220"/>
+          <circle cx="104" cy="38" r="3.5" fill="#0B1220"/>
+        </g>
+      </svg>
+    </div>
+    <p class="kicker">Cyber Resilience Campaign</p>
+    <h1>Gotcha<span>!</span></h1>
+    <p class="sub">You just scanned a QR code<br>from a stranger.</p>
+    <p class="lead">This one is safe. But a real attacker's code could have taken you somewhere very different.</p>
+    <div class="safe-badge">✓ This page collects nothing about you</div>
+  </header>
+
+  <!-- WHAT COULD HAVE HAPPENED -->
+  <section class="card warn">
+    <p class="kicker">What could have happened</p>
+    <h2>It's called "Quishing"</h2>
+    <p>QR code + phishing. A code can hide a malicious link, and you can't read it with your eyes. One scan could:</p>
+    <ul class="could-list">
+      <li><span class="ico">🔑</span> Open a fake login page that steals your password</li>
+      <li><span class="ico">💳</span> Ask for a "payment" that goes straight to a scammer</li>
+      <li><span class="ico">📲</span> Push you to download a malicious app</li>
+    </ul>
+  </section>
+
+  <section class="card">
+    <p class="kicker">Where fake codes hide</p>
+    <h2>Look out for them on</h2>
+    <div class="where">
+      <span class="chip">Parking meters</span>
+      <span class="chip">Flyers &amp; posters</span>
+      <span class="chip">"Verify your account" emails</span>
+      <span class="chip">Fake delivery notices</span>
+      <span class="chip">Restaurant tables</span>
+      <span class="chip">Stickers over real codes</span>
+    </div>
+  </section>
+
+  <!-- DEFENSES -->
+  <section class="card">
+    <p class="kicker">Defend yourself</p>
+    <h2>5 rules before you scan</h2>
+    <ol class="steps">
+      <li><div class="num">1</div><div><b>Preview the link</b><span>Your camera shows the address before opening it. Read it. Does the domain match who it claims to be?</span></div></li>
+      <li><div class="num">2</div><div><b>Check for tampering</b><span>Is the code a sticker slapped on top of another one? Walk away.</span></div></li>
+      <li><div class="num">3</div><div><b>Be suspicious of urgency</b><span>"Pay now", "Account locked", "Scan to verify" are pressure tricks. Real organizations rarely ask this way.</span></div></li>
+      <li><div class="num">4</div><div><b>Never log in or pay after a scan</b><span>Type the official website yourself or use the real app instead.</span></div></li>
+      <li><div class="num">5</div><div><b>Turn on MFA &amp; update your phone</b><span>Even if a password is stolen, multi-factor authentication can stop the attacker.</span></div></li>
+    </ol>
+  </section>
+
+  <!-- QUIZ -->
+  <section class="card" id="quiz">
+    <p class="kicker">Quick test</p>
+    <h2>Spot the real link</h2>
+    <p class="quiz-q">You scan a code on a parking meter that says "Pay with CityPark." Which address is safe to open?</p>
+    <div class="options">
+      <button class="opt" data-ok="0">citypark-payment-secure.com/pay</button>
+      <button class="opt" data-ok="1">citypark.gov/pay</button>
+      <button class="opt" data-ok="0">citypark.gov.pay-now.co/login</button>
+    </div>
+    <p class="feedback" id="fb" aria-live="polite"></p>
+  </section>
+
+  <!-- OOPS -->
+  <section class="card oops">
+    <p class="kicker">Already scanned a bad one?</p>
+    <h2>Do this right away</h2>
+    <ul>
+      <li>Close the page. Don't enter anything else.</li>
+      <li>Change any password you typed in, and turn on MFA.</li>
+      <li>Call your bank if you entered card details.</li>
+      <li>Report it: your school or work IT team, <a href="https://reportfraud.ftc.gov" target="_blank" rel="noopener">reportfraud.ftc.gov</a>, or <a href="https://www.cisa.gov/report" target="_blank" rel="noopener">cisa.gov/report</a>.</li>
+    </ul>
+  </section>
+
+  <!-- CTA -->
+  <section class="cta">
+    <p class="kicker">You just practiced DETECT</p>
+    <h2>Become a Cyber Defender</h2>
+    <p class="tri">ISOLATE · DETECT · PREPARE</p>
+    <a class="btn" href="https://www.cisa.gov/careers" target="_blank" rel="noopener">Explore cyber careers at CISA →</a>
+    <a class="btn ghost" href="https://www.cisa.gov/secure-our-world" target="_blank" rel="noopener">More safety tips: Secure Our World</a>
+  </section>
+
+  <footer>
+    <p>A student cybersecurity awareness project · Cyber Resilience: Protect Today, Prepare for Tomorrow</p>
+    <p style="margin-top:6px;">Sources:
+      <a href="https://www.cisa.gov/resources-tools/resources/ci-fortify-advice-isolating-vital-systems" target="_blank" rel="noopener">CI Fortify</a> ·
+      <a href="https://www.cisa.gov/resources-tools/resources/using-cyber-decoys-strengthen-detection-and-response" target="_blank" rel="noopener">Cyber Decoys</a> ·
+      <a href="https://www.cisa.gov/resources-tools/resources/preparing-post-quantum-era-call-action" target="_blank" rel="noopener">Post-Quantum Era</a>
+    </p>
+  </footer>
+</main>
+
+<script>
+  (function () {
+    var fb = document.getElementById('fb');
+    var opts = document.querySelectorAll('.opt');
+    opts.forEach(function (b) {
+      b.addEventListener('click', function () {
+        opts.forEach(function (o) { o.classList.remove('right', 'wrong'); });
+        if (b.dataset.ok === '1') {
+          b.classList.add('right');
+          fb.className = 'feedback ok';
+          fb.textContent = '✓ Correct! The real domain is citypark.gov. Nothing is added before or after it.';
+        } else {
+          b.classList.add('wrong');
+          fb.className = 'feedback no';
+          fb.textContent = '✗ Trap! Look at the real domain: the part right before the first "/". Scammers bury real names inside fake addresses.';
+        }
+      });
+    });
+  })();
+</script>
+</body>
+</html>
